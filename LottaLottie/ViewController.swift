@@ -9,6 +9,9 @@
 import Cocoa
 import Lottie
 
+// TODO: Move to MVVM structure
+// TODO: Add Rx bindings
+
 class ViewController: NSViewController {
 
     @IBOutlet weak var titleText: NSTextField!
@@ -20,6 +23,7 @@ class ViewController: NSViewController {
 
     override func viewDidLoad() {
         setupAnimationSlider()
+        animationContainer.layer?.backgroundColor = .white
     }
 
     private func setupAnimationSlider() {
@@ -61,10 +65,12 @@ class ViewController: NSViewController {
         guard let window = NSApplication.shared().mainWindow else { return }
 
         let panel = NSOpenPanel()
+        let fileTypes = ["json", "JSON"]
         panel.allowsMultipleSelection = false
-        panel.canChooseDirectories = true
+        panel.canChooseDirectories = false
         panel.canChooseFiles = true
-        panel.message = "Select your AfterEffects JSON file to load in Lottie"
+        panel.allowedFileTypes = fileTypes
+        panel.message = "Select your After Effects animation file to load in Lottie"
         panel.beginSheetModal(for: window) { (result) in
             if result == NSFileHandlingPanelOKButton {
                 self.loadLottieAnimationFrom(file: panel.urls.first)
